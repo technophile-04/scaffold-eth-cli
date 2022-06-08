@@ -1,6 +1,6 @@
 {
   "name": "scaffold-eth",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A starter kit for scaffold-eth projects",
   "main": "./bin/index.js",
   "bin": {
