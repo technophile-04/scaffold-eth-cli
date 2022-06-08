@@ -1,0 +1,21 @@
+{
+  "name": "scaffold-eth",
+  "version": "0.1.0",
+  "description": "A starter kit for scaffold-eth projects",
+  "main": "./bin/index.js",
+  "bin": {
+    "scaffold-eth": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "scaffold-eth",
+    "scaffoldeth"
+  ],
+  "author": "QEDK",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.3.0"
+  }
+}
