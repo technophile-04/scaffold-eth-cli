@@ -1,19 +1,40 @@
 #!/usr/bin/env node
 
-const package = require('../package.json');
-const { Command } = require('commander');
-const { spawn } = require('child_process');
-const program = new Command();
+const local = require('../package.json')
+const { Command } = require('commander')
+const { spawn } = require('child_process')
+const program = new Command()
 
 program
-  .name(package.name)
-  .description(package.description)
-  .version(package.version);
+  .name(local.name)
+  .description(local.description)
+  .version(local.version)
+  .option('-dir, --directory <name>', 'the name of the new directory to clone into')
 
-program.parse();
+program.parse()
 
-const child = spawn('git', ['clone', 'git@github.com:scaffold-eth/scaffold-eth.git', '--depth', '1'], { stdio: 'inherit'});
+const options = program.opts()
+
+const commandArray = ['clone']
+const sshUrl = 'git@github.com:scaffold-eth/scaffold-eth.git'
+const httpsUrl = 'https://github.com/scaffold-eth/scaffold-eth.git'
+commandArray.push(sshUrl)
+
+if (options.directory !== undefined) {
+  commandArray.push(options.directory)
+}
+
+commandArray.push('--depth', '1')
+
+const child = spawn('git', commandArray, { stdio: 'inherit' })
 
 child.on('close', (code) => {
-  process.exit(code);
-});
+  if (code !== 0) {
+    console.warn('Cloning via ssh failed... trying with https')
+    commandArray[1] = httpsUrl
+    const child = spawn('git', commandArray, { stdio: 'inherit' })
+    child.on('close', (code) => {
+      process.exit(code)
+    })
+  }
+})
